@@ -1,50 +1,133 @@
-console.log("hello");
-var template = (
-  <div>
-    <h1>world</h1> 
-    <p>good hello</p>
-  </div>
-)
-var name = "bruce";
-var age = 27;
-var loca = "Lodon";
-var user = {
-  name: "bruce",
-  age: 29,
-  loca: "ca",
-  option: ["good", "bad"]
+class Indecision extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handlePick = this.handlePick.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+
+    this.state = {
+      option: []
+      // option: []
+    }
+  }
+  handlePick() {
+    let temp = Math.floor(Math.random() * this.state.option.length);
+    console.log(this.state.option[temp]);
+  }
+  handleDelete() {
+    this.setState(() => {
+      return {
+        option: []
+      }
+    })
+  }
+  handleAdd(e) {
+    if(!e) {
+      return "empty";
+    }
+    else if(this.state.option.indexOf(e) > -1) {
+      return "already exist";
+    }
+    else {
+      this.setState((pre) => {
+        return {
+          option: pre.option.concat([e])
+        }
+      })
+    }
+    
+  }
+  render() {
+    const title = "Indecision";
+    const subTitle = "put your life in computer";
+    
+    return (
+      <div>
+        <Header title = {title} subTitle = {subTitle}/>
+        <Actions hasOptions = {this.state.option.length > 0} pick = {this.handlePick}/>
+        <Options opt = {this.state.option} handleDelete = {this.handleDelete}/>
+        <AddOptions add = {this.handleAdd}/>
+      </div>
+    )
+  }
 }
 
-function getOption(option) {
-  if(option.length > 1) {
-    return <li>{option[0]}</li>
-  }
-  else {
-    return "nothing happen";
+class Header extends React.Component {
+  render() {
+    return (
+      <div>
+        <p>This is my title: {this.props.title}</p>
+        <p>This is my subtitle: {this.props.subTitle}</p>
+      </div>
+    );
   }
 }
 
-const getLocation = (location) => <li>location: {location}</li>;
-// {
-//   if(location) {
-//     return <li>location: {location}</li>;
-//   }
-// }
+class Actions extends React.Component {
+  render() {
+    return (
+      <div>
+        <button disabled = {!this.props.hasOptions} onClick = {this.props.pick}>What should I do?</button>
+      </div>
+    )
+  }
+}
 
-// function getLocation(location) {
-//   if(location) {
-//     return <li>location: {location}</li>;
-//   }
-// }
-var new_tem = (
-  <div>
-    <h1>{user.name.toUpperCase()}</h1>
-    <ol>
-      {(user.age && user.age >= 27) && <li>age: {user.age}</li>}
-      {getLocation(user.loca)}
-      {getOption(user.option)}
-    </ol>
-  </div>
-)
-var approot = document.getElementById("app");
-ReactDOM.render(new_tem, approot);
+class Options extends React.Component {
+  render() {
+    return (
+      <div>
+      <button onClick = {this.props.handleDelete}>Remove all</button>
+        {
+          this.props.opt.map((o) => <NewOption key = {o} text = {o}/>)
+        }
+        <NewOption />
+      </div>
+    );
+  }
+}
+
+class NewOption extends React.Component {
+  render() {
+    return (
+      <div>
+        <p>{this.props.text}</p>
+      </div>
+    )
+  }
+}
+
+class AddOptions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleOption = this.handleOption.bind(this);
+  }
+  handleOption(e) {
+    e.preventDefault();
+    let temp = e.target.elements.option.value;
+    if(temp) {
+      this.props.add(temp);
+    }
+  }
+  render() {
+    return (
+      <div>
+        <form onSubmit = {this.handleOption}>
+          <input type = "text" name= "option" />
+          <button>Add option</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+// var jsx = (
+//   <div>
+//     <Header />
+//     <Actions />
+//     <Options />
+//     <AddOptions />
+//   </div>
+// )
+ReactDOM.render(<Indecision />, document.getElementById("app"));
+
