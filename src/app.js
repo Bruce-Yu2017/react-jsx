@@ -6,15 +6,21 @@ class Indecision extends React.Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDeleteOne = this.handleDeleteOne.bind(this);
     this.state = {
-      option: []
+      option: props.option
+      // option: []
     }
   }
 
   componentDidMount() {
+    console.log('hello world')
     try {
       const json = localStorage.getItem("option");
-      const options = JSON.parse(json);
-      this.setState(() => ({ option: options }))
+      if (json) {
+        const options = JSON.parse(json);
+        console.log(options);
+        this.setState(() => ({ option: options }));
+      } 
+      
     }
     catch(e) {
 
@@ -61,6 +67,10 @@ class Indecision extends React.Component {
     const title = "Indecision";
     const subTitle = "put your life in computer";
     
+    // if(!this.state.option) return;
+    let checkOption = this.state.option;
+    !checkOption ? checkOption = 0 : checkOption = this.state.option.length;
+
     return (
       <div>
         <Header title = {title} subTitle = {subTitle}/>
@@ -75,7 +85,9 @@ class Indecision extends React.Component {
     )
   }
 }
-
+Indecision.defaultProps = {
+  option: []
+}
 
 const Header = (props) => {
   return (
@@ -120,6 +132,8 @@ const Actions = (props) => {
 // }
 
 const Options = (props) => {
+  // if (!props.opt) return;
+  
   return (
     <div>
       <button onClick={props.handleDelete}>Remove all</button>

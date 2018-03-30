@@ -21,7 +21,8 @@ var Indecision = function (_React$Component) {
     _this.handleAdd = _this.handleAdd.bind(_this);
     _this.handleDeleteOne = _this.handleDeleteOne.bind(_this);
     _this.state = {
-      option: []
+      option: props.option
+      // option: []
     };
     return _this;
   }
@@ -29,12 +30,16 @@ var Indecision = function (_React$Component) {
   _createClass(Indecision, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      console.log('hello world');
       try {
         var json = localStorage.getItem("option");
-        var options = JSON.parse(json);
-        this.setState(function () {
-          return { option: options };
-        });
+        if (json) {
+          var options = JSON.parse(json);
+          console.log(options);
+          this.setState(function () {
+            return { option: options };
+          });
+        }
       } catch (e) {}
     }
   }, {
@@ -89,6 +94,10 @@ var Indecision = function (_React$Component) {
       var title = "Indecision";
       var subTitle = "put your life in computer";
 
+      // if(!this.state.option) return;
+      var checkOption = this.state.option;
+      !checkOption ? checkOption = 0 : checkOption = this.state.option.length;
+
       return React.createElement(
         "div",
         null,
@@ -106,6 +115,10 @@ var Indecision = function (_React$Component) {
 
   return Indecision;
 }(React.Component);
+
+Indecision.defaultProps = {
+  option: []
+};
 
 var Header = function Header(props) {
   return React.createElement(
@@ -163,6 +176,8 @@ Header.defaultProps = {
 // }
 
 var Options = function Options(props) {
+  // if (!props.opt) return;
+
   return React.createElement(
     "div",
     null,
