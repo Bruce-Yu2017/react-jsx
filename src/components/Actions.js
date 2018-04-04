@@ -1,12 +1,15 @@
 import React from "react";
 
-const Actions = (props) => {
-  return (
-    <div>
-      <button disabled={!props.hasOptions} onClick={props.pick}>What should I do?</button>
-    </div>
-  )
-}
+const Actions = (props) => (
+  <div>
+    <button 
+      className = "big-button"
+      disabled={!props.hasOptions} 
+      onClick={props.pick}>What should I do?
+    </button>
+  </div>
+)
+
 
 export default Actions;
 

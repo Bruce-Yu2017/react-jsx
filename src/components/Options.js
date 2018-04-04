@@ -4,11 +4,18 @@ import NewOption from "./NewOption"
 const Options = (props) => {
   return (
     <div>
-      <button onClick={props.handleDelete}>Remove all</button>
-      {props.opt.length === 0 && <p>Please add action</p>}
+      <div className = "widget-header">
+        <h3 className= "widget-header__title">Your Options</h3>
+        <button
+          className="button button--link"
+          onClick={props.handleDelete}>Remove all</button>
+        
+      </div>
+      {props.opt.length === 0 && <p className = "message">Please add action</p>}
       {
-        props.opt.map((o) => (
+        props.opt.map((o, index) => (
           <NewOption
+            count = {index + 1}
             key={o}
             text={o}
             handleDeleteOne={props.handleDeleteOne}

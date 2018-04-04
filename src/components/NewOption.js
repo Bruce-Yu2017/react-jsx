@@ -2,10 +2,10 @@ import React from "react";
 
 const NewOption = (props) => {
   return (
-    <div>
-      {props.text}
+    <div className="option">
+      <p className= "option__text">{props.count}. {props.text}</p>
       <button
-        // onClick={props.handleDeleteOne(props.text)}
+        className = "button button--link"
         onClick={() => {
           props.handleDeleteOne(props.text)
         }}

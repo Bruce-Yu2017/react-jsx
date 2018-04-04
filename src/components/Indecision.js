@@ -6,9 +6,10 @@ import Options from "./Options";
 import OptionModal from "./OptionModal";
 export default class Indecision extends React.Component {
   state = {
-    option: []
+    option: [],
+    selectedOption: undefined
   }
-
+  
   componentDidMount = () => {
     console.log('hello world')
     try {
@@ -22,7 +23,6 @@ export default class Indecision extends React.Component {
     catch (e) {
 
     }
-
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -33,6 +33,16 @@ export default class Indecision extends React.Component {
   handlePick = () => {
     let temp = Math.floor(Math.random() * this.state.option.length);
     console.log(this.state.option[temp]);
+    this.setState(() => ({
+      selectedOption: this.state.option[temp]
+    }))
+  }
+
+  closeModal = () => {
+    console.log("close")
+    this.setState(() => ({
+      selectedOption: false
+    }))
   }
   
   handleDeleteOne = (opt) => {
@@ -49,10 +59,10 @@ export default class Indecision extends React.Component {
   
   handleAdd = (e) => {
     if (!e) {
-      return "empty";
+      return "Enter valid value to add item";
     }
     else if (this.state.option.indexOf(e) > -1) {
-      return "already exist";
+      return "Your input value has already existed.";
     }
     else {
       this.setState((pre) => ({ option: pre.option.concat([e]) }));
@@ -68,14 +78,23 @@ export default class Indecision extends React.Component {
     return (
       <div>
         <Header title={title} subTitle={subTitle} />
-        <Actions hasOptions={this.state.option.length > 0} pick={this.handlePick} />
-        <Options
-          opt={this.state.option}
-          handleDelete={this.handleDelete}
-          handleDeleteOne={this.handleDeleteOne}
-        />
-        <OptionModal />
-        <AddOptions add={this.handleAdd} />
+        <div className = "container">
+          <Actions hasOptions={this.state.option.length > 0} pick={this.handlePick} />
+          <div className = "widget">
+            <Options
+              opt={this.state.option}
+              handleDelete={this.handleDelete}
+              handleDeleteOne={this.handleDeleteOne}
+            />
+            <AddOptions add={this.handleAdd} />
+          </div>
+          
+          <OptionModal
+            selectedOption={this.state.selectedOption}
+            closeModal={this.closeModal}
+          />
+          
+        </div> 
       </div>
     )
   }
